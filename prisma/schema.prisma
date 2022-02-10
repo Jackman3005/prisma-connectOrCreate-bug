@@ -1,0 +1,27 @@
+// This is your Prisma schema file,
+// learn more about it in the docs https//pris.ly/d/prisma-schema
+
+datasource db {
+  provider = "postgresql"
+  url      = "postgresql://testuser:testpw@localhost:5432/testdb?schema=public"
+}
+
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "rhel-openssl-1.0.x"]
+}
+
+
+model MyModel {
+  id                         String              @id @default(uuid())
+  name                       String
+  itemId String?             @unique
+  item   Item?               @relation(references: [id], fields: [itemId])
+
+}
+
+model Item {
+  id           String              @id @default(uuid())
+  name         String
+  myModel      MyModel?
+}
